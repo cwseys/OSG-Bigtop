@@ -1,5 +1,5 @@
 # OSG-Bigtop
-The following are notes and tools gained in the process of migrating UW-Madison CMS-T2 from OpenScience Grid (3.5) packaged HDFS to Bigtop (1.5.0) packaging.  
+The following are notes and tools gained in the process of migrating UW-Madison Wisconsin CMS-T2 from OpenScience Grid (3.5) packaged HDFS to Bigtop (1.5.0) packaging.  
 
 ## Supplemental RPM
 The hdfs-bigtop-osg.rpm should be installed at the same time as Bigtop 1.5.0 RPMs. The hdfs-bigtop-osg.rpm (built from hdfs-bigtop-osg.spec file 'rpmbuild -bb name.specfile') satisfies the OSG RPM dependencies and installs a symlink from /usr/lib64/libhdfs.so.0.0.0 to /usr/lib64/libhdfs.so.0 .  This symlink allows xrootd and globus-gridftp packaged by OSG to run with Hadoop as packaged by Bigtop.
