@@ -7,7 +7,7 @@ The hdfs-bigtop-osg.rpm should be installed at the same time as Bigtop 1.5.0 RPM
 ## Migration Notes
 In general follow the procedure given by Hadoop, but with the notes below.
 We used [**HA with downtime**](https://hadoop.apache.org/docs/r2.10.1/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html#HDFS_UpgradeFinalizationRollback_with_HA_Enabled) .
-There is also an **HA without downtime** are not clear. 
+There is also an **HA without downtime**, but the instructions are not as clear. 
 Finally, for [**non-HA clusters**](https://hadoop.apache.org/docs/r2.10.1/hadoop-project-dist/hadoop-hdfs/HdfsRollingUpgrade.html#Upgrading_Non-HA_Clusters)
 - NameNode JVM heap during upgrade:  The namenode daemon is not started with the initscript during upgrade.  This means that the JVM heap size and other changes set in /etc/default/hadoop-hdfs-namenode are not applied. There might be a more elegant way, but we hacking /usr/lib/hadoop-hdfs/bin/hdfs line 146.  E.g. we changed `HADOOP_OPTS="$HADOOP_OPTS $HADOOP_NAMENODE_OPTS"` to `HADOOP_OPTS="$HADOOP_OPTS $HADOOP_NAMENODE_OPTS -Xmx60000m"`.
 - You may have to restart each (or some) datanodes to get them to connect to the namenodes after namenodes are upgraded and restarted.  One way to do this is to create a list of datanodes before upgrade: `hdfs dfsadmin -report -live 2>/dev/null | grep Hostname | sed -E 's/^.*\s+//g' > /tmp/datanodes` Be prepared to iterate over this list restarting datanodes.  (We used a script to ssh to each datanode and restart the datanode. If you don't have such a script, let us know.)
