@@ -6,7 +6,7 @@ The hdfs-bigtop-osg.rpm should be installed at the same time as Bigtop 1.5.0 RPM
 
 ## Migration Notes
 In general follow the procedure given by Hadoop, but with the notes below.
-We used **HA with downtime** https://hadoop.apache.org/docs/r2.10.1/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html#HDFS_UpgradeFinalizationRollback_with_HA_Enabled .
+We used [**HA with downtime**](https://hadoop.apache.org/docs/r2.10.1/hadoop-project-dist/hadoop-hdfs/HDFSHighAvailabilityWithQJM.html#HDFS_UpgradeFinalizationRollback_with_HA_Enabled) .
 There is also an **HA without downtime** but the instructions for how to start the namenode daemon a) after starting the upgrade but b) before finishing the upgrade are not clear.  (Using HA with downtime in this scenario the namenode daemon should be started with no special command line switches.) 
 Finally, for **non-HA clusters** https://hadoop.apache.org/docs/r2.10.1/hadoop-project-dist/hadoop-hdfs/HdfsRollingUpgrade.html#Upgrading_Non-HA_Clusters
 - NameNode JVM heap during upgrade:  The namenode daemon is not started with the initscript during upgrade.  This means that the JVM heap size and other changes set in /etc/default/hadoop-hdfs-namenode are not applied. There might be a more elegant way, but we hacking /usr/lib/hadoop-hdfs/bin/hdfs line 146.  E.g. we changed `HADOOP_OPTS="$HADOOP_OPTS $HADOOP_NAMENODE_OPTS"` to `HADOOP_OPTS="$HADOOP_OPTS $HADOOP_NAMENODE_OPTS -Xmx60000m"`.
